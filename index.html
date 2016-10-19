@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pageA.css">
+    <style>
+    .charactor {
+       width: 151px;
+       height: 291px;
+       background: url(http://img.mukewang.com/55ade248000198ae10550582.png) -0px -291px no-repeat;
+       position: absolute;
+       /* 设置一个元素的坐标 */
+       left: 6%;
+       top: 55%;
+   }
+   .slowWalk{
+     /*填入动画样式规则*/
+     /*规定@keyframes动画的名称*/
+      -webkit-animation-name : person-slow;
+      /*规定动画完成一个周期所花费的秒或毫秒。默认是0*/
+      -webkit-animation-duration: 950ms;
+      /*规定动画被播放的次数。默认是1 infinite(循环播放)*/
+      -webkit-animation-iteration-count:infinite;
+      /*动画切换的方式是一帧一帧的改变*/
+      -webkit-animation-timing-function:steps(1,start);
+      -moz-animation-name: person-slow;
+      -moz-animation-duration: 950ms;
+      -moz-animation-iteration-count: infinite;
+      -moz-animation-timing-function: steps(1,start);
+   }
+   /*普通慢走*/
+
+     @-webkit-keyframes person-slow {
+         0% {
+             background-position: -0px -291px;
+         }
+         25% {
+             background-position: -602px -0px;
+         }
+         50% {
+             background-position: -302px -291px;
+         }
+         75% {
+             background-position: -151px -291px;
+         }
+         100% {
+             background-position: -0px -291px;
+         }
+     }
+
+     @-moz-keyframes person-slow {
+         0% {
+             background-position: -0px -291px;
+         }
+         25% {
+             background-position: -602px -0px;
+         }
+         50% {
+             background-position: -302px -291px;
+         }
+         75% {
+             background-position: -151px -291px;
+         }
+         100% {
+             background-position: -0px -291px;
+         }
+     }
+     /*人物暂停*/
+     .pauseWalk{
+       -webkit-animation-play-state:paused;
+       -moz-animation-play-state:paused;
+     }
+   </style>
+  </head>
+  <body>
+      <div id='content'>
+        <ul class="content-wrap">
+          <!-- 第一副画面 -->
+          <li>页面1</li>
+          <div class="a_background">
+            <div class="a_background_top"></div>
+            <div class="a_background_middle"></div>
+            <div class="a_background_bottom"></div>
+          </div>
+          <!-- 第二副画面 -->
+          <li>页面2</li>
+          <!-- 第三副画面 -->
+          <li>页面3</li>
+        </ul>
+         <!-- 与页面根节点并列 -->
+         <div id="boy" class="charactor"></div>
+        <div class="button">
+          <button>开始</button>
+          <button>暂停</button>
+        </div>
+      </div>
+      <script src='jquery-3.1.0.min.js'></script>
+      <script type="text/javascript" src="http://img.mukewang.com/down/55ac9ea30001ace700000000.js"></script>
+      <script src='Swipe.js'></script>
+      <script>
+        var swipe = Swipe($('#content'));
+        // $('button').click(function(){
+        //   swipe.scrollTo($('#content').width()*2,5000)
+        // })
+        // 获取数据
+        var getValue = function(className){
+          var $elem = $(''+className+'');
+          return{
+            height: $elem.height(),
+            top: $elem.position().top
+          }
+        }
+        // 路的Y轴
+        var pathY = function(){
+          var data = getValue('.a_background_middle');
+          return data.top + data.height/2;
+        }();
+        var $boy = $('#boy');
+        var boyHeight = $boy.height();
+        // 修正小男孩的正确位置
+        $boy.css({
+          top:pathY-boyHeight+25
+        })
+        // 增加精灵动画
+        // 开始
+        $('button:first').click(function(){
+              // // 增加走路的CSS3关键帧规则
+              $boy.addClass('slowWalk')
+                  .transition({
+              'left': $("#content").width() + 'px',
+              }, 10000, 'linear', function() {});
+          });
+          // 暂停
+          $('button:last').click(function(){
+            var left = $boy.css('left');
+            $boy.css('left',left);
+            $boy.addClass('pauseWalk');
+          })
+      </script>
+  </body>
+</html>
